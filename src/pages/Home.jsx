@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Container, PostCard } from "../components";
-import BeforeLoginComponent from "../assets/beforeLoginComponent";
+import BeforeLoginComponent from "../assets/BeforeLoginComponent.jsx";
 import { useSelector } from "react-redux";
 
 function Home() {
