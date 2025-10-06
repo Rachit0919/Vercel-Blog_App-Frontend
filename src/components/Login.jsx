@@ -38,7 +38,7 @@ function Login() {
         },
         body: JSON.stringify(data),
       });
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/login`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/login`, {
         method: "POST",
         credentials: "include",
         headers:{
