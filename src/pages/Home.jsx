@@ -69,7 +69,7 @@ function Home() {
       <section className="w-full max-w-7xl">
         <Container>
           <div className="relative">
-            <BeforeLoginComponent />
+            {/* <BeforeLoginComponent /> */}
           </div>
         </Container>
       </section>
