@@ -29,7 +29,7 @@ function Login() {
     setError("");
     try {
       console.log("Login function called with data:", data);
-      console.log("Attempting to send login request to:", `${import.meta.env.VITE_API_BASE_URL}/users/login`);
+      console.log("Attempting to send login request to:", `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/login`);
       console.log("Request options:", {
         method: "POST",
         credentials: "include",
