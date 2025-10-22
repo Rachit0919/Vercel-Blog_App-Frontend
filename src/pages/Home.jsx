@@ -16,7 +16,7 @@ function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/home`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/home`, {
           method: "GET",
           credentials: "include",
         });

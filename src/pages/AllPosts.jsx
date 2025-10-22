@@ -16,7 +16,7 @@ export default function AllPosts() {
       // console.log("\nInside useeffect fetchpost allposts.jsx");
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/all-posts/${id}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/all-posts/${id}`,
           {
             method: "GET",
             credentials: "include",
