@@ -122,7 +122,7 @@ export const login = async (credentials) => {
 export const logout = async () => {
   let hasLoggedOut = false;
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/logout`, {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/logout`, {
       method: "POST",
       credentials: "include",
     });
