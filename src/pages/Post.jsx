@@ -4,6 +4,7 @@ import appwriteService from "../appwrite/config";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
+import deletePost from '../services/postService'
 
 
 export default function Post() {
@@ -45,14 +46,14 @@ export default function Post() {
     getPost();
   }, [id, navigate]);
 
-  const deletePost = () => {
-    appwriteService.deletePost(post.$id).then((status) => {
-      if (status) {
-        appwriteService.deleteFile(post.featuredImage);
-        navigate("/");
-      }
-    });
-  };
+  // const deletePost = () => {
+  //   appwriteService.deletePost(post.$id).then((status) => {
+  //     if (status) {
+  //       appwriteService.deleteFile(post.featuredImage);
+  //       navigate("/");
+  //     }
+  //   });
+  // };
 
   return post ? (
     <div className="py-8">
