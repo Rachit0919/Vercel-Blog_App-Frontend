@@ -39,7 +39,7 @@ const fetchRequest = async (url, options = {}) => {
 export const createPost = async (formData) => {
   
 
-  return fetchRequest("/posts", {
+  return fetchRequest("/api/v1/posts", {
     method: "POST",
     body: formData,
   });
@@ -55,7 +55,7 @@ export const updatePost = async (id, data,userId) => {
   if (userId) formData.append("userId", userId);
   console.log("\nuserId inside updatePost postService", userId)
 
-  return fetchRequest(`/posts/${id}`, {
+  return fetchRequest(`/api/v1/posts/${id}`, {
     method: "PUT",
     body: formData,
   });
@@ -64,7 +64,7 @@ export const updatePost = async (id, data,userId) => {
 
 // Delete post
 export const deletePost = async (id) => {
-  return fetchRequest(`/posts/${id}`, {
+  return fetchRequest(`/api/v1/posts/${id}`, {
     method: "DELETE",
   });
 };
