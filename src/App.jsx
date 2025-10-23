@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
   const fetchCurrentUser = async () => {
     try {
-      console.log("Fetching current user from:", `${import.meta.env.VITE_API_BASE_URL}/users/current-user`);
+      console.log("Fetching current user from:", `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`);
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/current-user`, {
         credentials: "include",
         headers: {
