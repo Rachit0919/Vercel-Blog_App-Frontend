@@ -12,7 +12,7 @@ export const getCurrentUser = async () => {
     const accessToken = localStorage.getItem('accessToken');
     
     // First attempt
-    let res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/current-user`, {
+    let res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`, {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
