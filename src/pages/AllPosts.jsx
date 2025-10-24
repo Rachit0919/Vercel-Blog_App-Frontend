@@ -172,27 +172,34 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, PostCard } from "../components";
-import { getCurrentUser } from "../services/authService";
+// import { getCurrentUser } from "../services/authService";
 import { login } from "../store/authSlice";
 
 export default function AllPosts() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.userData);
-  const id = user?._id;
+  // const id = data.data._id;
   console.log("User at allPost.jsx: ", user)
   console.log("id at allPost.jsx: ", id)
 
   const [posts, setPosts] = useState([]);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
+  const [id, setId] = useState(null);
 
   // 1️⃣ Fetch current user and store in Redux
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await getCurrentUser(); // calls your authService
+        const res = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`,
+          {
+            credentials: "include",
+          }
+        );
         const data = await res.json();
         dispatch(login({ user: data.data }));
+        setId(data.data._id)
       } catch (err) {
         console.error("Error fetching current user:", err);
       } finally {
