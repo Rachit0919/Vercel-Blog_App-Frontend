@@ -1,5 +1,3 @@
-
-
 import { logout as logoutAction } from "../store/authSlice"; // adjust path to your authSlice
 import store from "../store/store"; // your Redux store
 
@@ -7,26 +5,29 @@ export const getCurrentUser = async () => {
   let hasLoggedOut = false;
   try {
     console.log("Get current user called");
-    
+
     // Get stored tokens from localStorage if available
-    const accessToken = localStorage.getItem('accessToken');
-    
+    const accessToken = localStorage.getItem("accessToken");
+
     // First attempt
-    let res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`, {
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        ...(accessToken && { "Authorization": `Bearer ${accessToken}` })
-      },
-    });
+    let res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`,
+      {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+        },
+      }
+    );
 
     // If access token expired, call refresh-token and retry
     if (res.status === 401) {
       console.log("\nRefresh Access Token api called");
-      
+
       // Get stored refresh token from localStorage if available
-      const refreshToken = localStorage.getItem('refreshToken');
-      
+      const refreshToken = localStorage.getItem("refreshToken");
+
       const refreshRes = await fetch(
         `${import.meta.env.VITE_API_BASE_URL}/users/refresh-token`,
         {
@@ -34,9 +35,9 @@ export const getCurrentUser = async () => {
           credentials: "include", // send refresh token cookie
           headers: {
             "Content-Type": "application/json",
-            ...(refreshToken && { "Authorization": `Bearer ${refreshToken}` })
+            ...(refreshToken && { Authorization: `Bearer ${refreshToken}` }),
           },
-          ...(refreshToken && { body: JSON.stringify({ refreshToken }) })
+          ...(refreshToken && { body: JSON.stringify({ refreshToken }) }),
         }
       );
 
@@ -44,29 +45,35 @@ export const getCurrentUser = async () => {
         // Store new tokens if they're returned
         const refreshData = await refreshRes.json();
         if (refreshData.data?.accessToken) {
-          localStorage.setItem('accessToken', refreshData.data.accessToken);
+          localStorage.setItem("accessToken", refreshData.data.accessToken);
         }
         if (refreshData.data?.refreshToken) {
-          localStorage.setItem('refreshToken', refreshData.data.refreshToken);
+          localStorage.setItem("refreshToken", refreshData.data.refreshToken);
         }
-        
+
         // Retry with new token
-        const newAccessToken = localStorage.getItem('accessToken');
-        res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/current-user`, {
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            ...(newAccessToken && { "Authorization": `Bearer ${newAccessToken}` })
-          },
-        });
-        return res;
+        const newAccessToken = localStorage.getItem("accessToken");
+        res = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/users/current-user`,
+          {
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              ...(newAccessToken && {
+                Authorization: `Bearer ${newAccessToken}`,
+              }),
+            },
+          }
+        );
+        if (!res.ok) throw new Error(`Failed to fetch user: ${res.status}`);
+        const data = await res.json();
+        return data.data;
       } else {
         // Clear tokens on refresh failure
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         throw new Error("Session expired. Please log in again.");
       }
-
 
       // Retry the original request
     }
@@ -88,14 +95,17 @@ export const getCurrentUser = async () => {
 // Add login function to store tokens in localStorage
 export const login = async (credentials) => {
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/login`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/users/login`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      }
+    );
 
     if (!res.ok) {
       const errorData = await res.json();
@@ -103,15 +113,15 @@ export const login = async (credentials) => {
     }
 
     const data = await res.json();
-    
+
     // Store tokens in localStorage as fallback
     if (data.data.accessToken) {
-      localStorage.setItem('accessToken', data.data.accessToken);
+      localStorage.setItem("accessToken", data.data.accessToken);
     }
     if (data.data.refreshToken) {
-      localStorage.setItem('refreshToken', data.data.refreshToken);
+      localStorage.setItem("refreshToken", data.data.refreshToken);
     }
-    
+
     return data;
   } catch (error) {
     console.error("Login error:", error);
@@ -122,26 +132,27 @@ export const login = async (credentials) => {
 export const logout = async () => {
   let hasLoggedOut = false;
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/logout`,
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
 
     if (!res.ok) {
       throw new Error("Logout failed on the server.");
     }
 
     // Clear localStorage tokens
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
 
     // Dispatch logout action to Redux store
     store.dispatch(logoutAction());
     hasLoggedOut = true; // Set the flag to true after successful logout
     return res;
   } catch (error) {
-    throw new Error(
-      "Something went wrong while logging out: " + error.message
-    );
+    throw new Error("Something went wrong while logging out: " + error.message);
   }
 };
