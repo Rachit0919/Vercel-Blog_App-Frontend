@@ -76,15 +76,33 @@
 
 
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { Container, PostCard } from "../components";
+import { getCurrentUser } from "../services/authService";
+import { login } from "../store/authSlice";
 
 export default function AllPosts() {
+  const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.userData);
   const id = user?._id;
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() =>{
+    const fetchUser = async () => {
+      try {
+        const res = await getCurrentUser(); // calls your authService
+        const data = await res.json();
+        dispatch(login({ user: data.data }));
+      } catch (err) {
+        console.error("Error fetching current user:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  },[dispatch])
 
   useEffect(() => {
     if (!id) return; // wait until user is loaded
