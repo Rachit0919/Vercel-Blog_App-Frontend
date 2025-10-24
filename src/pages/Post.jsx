@@ -146,10 +146,7 @@ export default function Post() {
         }
 
         const data = await response.json();
-        setPost({
-          ...data.data.post,
-          imageURL: data.data.imageUrl.url || data.data.imageUrl.imageURL,
-        });
+        setPost(data);
       } catch (error) {
         console.error("Error fetching the post:", error);
         navigate("/"); // Fallback redirect
