@@ -1,139 +1,74 @@
-// import { useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
-// import { Container, PostCard } from "../components";
-
-// export default function AllPosts() {
-//   const user = useSelector((state) => state.auth.userData);
-//   const id = user?._id;
-//   // console.log("\nId inside allPosts.jsx : ", id);
-//   const [posts, setPosts] = useState([]);
-//   // console.log("\nPosts indside allPosts.jsx:", posts);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     if (!id) return;
-//     // console.log("\nInside useeffect allposts.jsx");
-//     const fetchPosts = async () => {
-//       // console.log("\nInside useeffect fetchpost allposts.jsx");
-//       try {
-//         const res = await fetch(
-//           `${import.meta.env.VITE_API_BASE_URL}/api/v1/all-posts/${id}`,
-//           {
-//             method: "GET",
-//             credentials: "include",
-//             headers: {
-//               "Content-Type": "application/json",
-              
-//             },
-//           }
-//         );
-//         const data = await res.json();
-//         // console.log("\nData in allPosts.jsx", data);
-//         setPosts(data.data || []); 
-//       } catch (err) {
-//         console.error("Error fetching posts:", err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     fetchPosts();
-//   }, [id]);
-
-//   if (loading) return <p>Loading...</p>;
-
-//   return (
-//     <section className="w-full py-8">
-//       <Container>
-//         {loading ? (
-//           // <p className="text-center text-indigo-600">Loading posts...</p>
-//           <p className="text-center text-lg font-medium text-indigo-600 animate-pulse">
-//             Loading posts...
-//           </p>
-//         ) : posts.length === 0 ? (
-//           <p className="text-center text-white">No posts available.</p>
-//         ) : posts.length === 1 ? (
-//           <div className="flex justify-center">
-//             <div className="p-2 ">
-//               <PostCard {...posts[0]} />
-//             </div>
-//           </div>
-//         ) : (
-//           <div className="flex flex-wrap justify-center mx-2 items-start">
-//             {posts.map((post) => (
-//               <div
-//                 key={post._id}
-//                 className="p-2 "
-//               >
-//                 <PostCard {...post} />
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </Container>
-//     </section>
-//   )
-// }
 
 
 // import { useEffect, useState } from "react";
-// import { useDispatch,useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 // import { Container, PostCard } from "../components";
-// import { getCurrentUser } from "../services/authService";
+// // import { getCurrentUser } from "../services/authService";
 // import { login } from "../store/authSlice";
 
 // export default function AllPosts() {
-//   const dispatch = useDispatch()
+//   const dispatch = useDispatch();
 //   const user = useSelector((state) => state.auth.userData);
-//   const id = user?._id;
-
+//   // const id = data.data._id;
+//   console.log("User at allPost.jsx: ", user)
+  
 //   const [posts, setPosts] = useState([]);
-//   const [loading, setLoading] = useState(true);
+//   const [loadingUser, setLoadingUser] = useState(true);
+//   const [loadingPosts, setLoadingPosts] = useState(true);
+//   const [id, setId] = useState(null);
+//   console.log("id at allPost.jsx: ", id)
 
-//   useEffect(() =>{
+//   // 1️⃣ Fetch current user and store in Redux
+//   useEffect(() => {
 //     const fetchUser = async () => {
 //       try {
-//         const res = await getCurrentUser(); // calls your authService
+//         const res = await fetch(
+//           `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`,
+//           {
+//             credentials: "include",
+//           }
+//         );
 //         const data = await res.json();
 //         dispatch(login({ user: data.data }));
+//         setId(data.data._id)
 //       } catch (err) {
 //         console.error("Error fetching current user:", err);
 //       } finally {
-//         setLoading(false);
+//         setLoadingUser(false);
 //       }
 //     };
 //     fetchUser();
-//   },[dispatch])
+//   }, [dispatch]);
 
+//   // 2️⃣ Fetch posts after user is available
 //   useEffect(() => {
-//     if (!id) return; // wait until user is loaded
+//     if (!user) return;
 
 //     const fetchPosts = async () => {
 //       try {
 //         const res = await fetch(
-//           `${import.meta.env.VITE_API_BASE_URL}/api/v1/all-posts/${user?._id}`,
+//           `${import.meta.env.VITE_API_BASE_URL}/api/v1/all-posts/${user._id}`,
 //           {
-//             method: "GET",
 //             credentials: "include",
-//             headers: { "Content-Type": "application/json" },
 //           }
 //         );
 
-//         if (!res.ok) throw new Error(`Error: ${res.status}`);
-
+//         if (!res.ok) throw new Error(`Error fetching posts: ${res.status}`);
 //         const data = await res.json();
 //         setPosts(data.data || []);
 //       } catch (err) {
 //         console.error("Error fetching posts:", err);
-//         setPosts([]); // fallback
+//         setPosts([]);
 //       } finally {
-//         setLoading(false);
+//         setLoadingPosts(false);
 //       }
 //     };
 
 //     fetchPosts();
 //   }, [user]);
 
-//   if (!user || loading) {
+//   // Loading state
+//   if (loadingUser || loadingPosts) {
 //     return (
 //       <p className="text-center text-lg font-medium text-indigo-600 animate-pulse">
 //         Loading posts...
@@ -172,22 +107,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, PostCard } from "../components";
-// import { getCurrentUser } from "../services/authService";
 import { login } from "../store/authSlice";
 
 export default function AllPosts() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.userData);
-  // const id = data.data._id;
-  console.log("User at allPost.jsx: ", user)
-  
+
   const [posts, setPosts] = useState([]);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
-  const [id, setId] = useState(null);
-  console.log("id at allPost.jsx: ", id)
 
-  // 1️⃣ Fetch current user and store in Redux
+  // 1️⃣ Fetch current user
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -198,8 +128,12 @@ export default function AllPosts() {
           }
         );
         const data = await res.json();
-        dispatch(login({ user: data.data }));
-        setId(data.data._id)
+
+        if (data?.data) {
+          dispatch(login({ user: data.data }));
+        } else {
+          console.error("No user data received");
+        }
       } catch (err) {
         console.error("Error fetching current user:", err);
       } finally {
@@ -209,9 +143,9 @@ export default function AllPosts() {
     fetchUser();
   }, [dispatch]);
 
-  // 2️⃣ Fetch posts after user is available
+  // 2️⃣ Fetch posts once user is available
   useEffect(() => {
-    if (!user) return;
+    if (!user?._id) return;
 
     const fetchPosts = async () => {
       try {
@@ -222,9 +156,8 @@ export default function AllPosts() {
           }
         );
 
-        if (!res.ok) throw new Error(`Error fetching posts: ${res.status}`);
         const data = await res.json();
-        setPosts(data.data || []);
+        setPosts(data?.data || []);
       } catch (err) {
         console.error("Error fetching posts:", err);
         setPosts([]);
@@ -236,7 +169,7 @@ export default function AllPosts() {
     fetchPosts();
   }, [user]);
 
-  // Loading state
+  // 3️⃣ Handle loading and empty states
   if (loadingUser || loadingPosts) {
     return (
       <p className="text-center text-lg font-medium text-indigo-600 animate-pulse">
@@ -245,10 +178,11 @@ export default function AllPosts() {
     );
   }
 
-  if (posts.length === 0) {
+  if (!loadingPosts && posts.length === 0) {
     return <p className="text-center text-white">No posts available.</p>;
   }
 
+  // 4️⃣ Render posts
   return (
     <section className="w-full py-8">
       <Container>
