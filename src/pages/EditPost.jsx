@@ -23,7 +23,7 @@ function EditPost() {
     const getPost = async () => {
       if (id) {
         // console.log("Id: ", id);
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/post/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/post/${id}`, {
           method: "GET",
           credentials: "include", // keep cookies if using auth
           headers: {
