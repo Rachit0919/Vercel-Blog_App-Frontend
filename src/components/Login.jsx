@@ -1,5 +1,3 @@
-
-
 // import React, { useState } from "react";
 // import { Link, useNavigate } from "react-router-dom";
 // import { login as authLogin } from "../store/authSlice";
@@ -17,7 +15,6 @@
 //     this.errors = [];
 //   }
 // }
-
 
 // function Login() {
 //   const navigate = useNavigate();
@@ -53,12 +50,10 @@
 //         throw new ApiError( result.message || "Login failed!!!")
 //       }
 //       dispatch(authLogin({ user: result.user, token: result.token }));
-      
-      
+
 //       navigate('/')
 //       return res
 //       .status(200)
-      
 
 //     } catch (error) {
 //       setError(error);
@@ -138,7 +133,6 @@
 // }
 
 // export default Login;
-
 
 // import React, { useState } from "react";
 // import { Link, useNavigate } from "react-router-dom";
@@ -284,7 +278,6 @@
 
 // export default Login;
 
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login as authLogin } from "../store/authSlice";
@@ -323,12 +316,22 @@ function Login() {
 
       if (!res.ok) {
         // Map backend errors to fields
-        if (result.message?.includes("does not exist")) {
-          setFieldError("email", { type: "manual", message: "The user doesn't exist" });
-        } else if (result.message?.includes("credentials")) {
-          setFieldError("password", { type: "manual", message: "Password is incorrect" });
+        const errorMsg = result.message || result.error;
+        if (errorMsg.includes("does not exist")) {
+          setFieldError("email", {
+            type: "manual",
+            message: "The user doesn't exist",
+          });
+        } else if (
+          errorMsg.includes("credentials") ||
+          errorMsg.includes("password")
+        ) {
+          setFieldError("password", {
+            type: "manual",
+            message: "Password is incorrect",
+          });
         } else {
-          setGeneralError(result.message || "Login failed!");
+          setGeneralError("Login failed!");
         }
         return;
       }
