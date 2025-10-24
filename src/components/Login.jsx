@@ -92,7 +92,7 @@ function Login() {
         {/* Error message */}
         {error && (
           <p className="text-red-500 mt-6 text-center text-sm font-medium">
-            {error.message}
+            "Your email or password is incorrect or The user doesn't exist"
           </p>
         )}
 
