@@ -296,6 +296,7 @@ function Login() {
     clearErrors,
   } = useForm();
   const [generalError, setGeneralError] = useState("");
+  console.log("\nGeneral error inside login.jsx:", generalError)
 
   const login = async (data) => {
     clearErrors(); // clear previous field errors
