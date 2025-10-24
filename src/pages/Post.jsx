@@ -46,14 +46,7 @@ export default function Post() {
     getPost();
   }, [id, navigate]);
 
-  // const deletePost = () => {
-  //   appwriteService.deletePost(post.$id).then((status) => {
-  //     if (status) {
-  //       appwriteService.deleteFile(post.featuredImage);
-  //       navigate("/");
-  //     }
-  //   });
-  // };
+  
 
   return post ? (
     <div className="py-8">
@@ -72,7 +65,7 @@ export default function Post() {
               </Link>
               <Button
                 className=" bg-red-500 rounded hover:bg-red-700"
-                onClick={deletePost}
+                onClick={() => deletePost(id)}
               >
                 Delete
               </Button>
