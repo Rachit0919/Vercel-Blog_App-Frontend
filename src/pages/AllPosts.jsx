@@ -92,7 +92,7 @@ export default function AllPosts() {
     const fetchPosts = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/all-posts/${id}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/all-posts/${user?._id}`,
           {
             method: "GET",
             credentials: "include",
@@ -113,7 +113,7 @@ export default function AllPosts() {
     };
 
     fetchPosts();
-  }, [id]);
+  }, [user]);
 
   if (!user || loading) {
     return (
