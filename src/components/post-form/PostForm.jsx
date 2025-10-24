@@ -8,7 +8,7 @@ import { createPost, updatePost } from "../../services/postService";
 
 
 export default function PostForm({ post }) {
-  const { register, handleSubmit, watch, setValue, control, getValues } =
+  const { register, handleSubmit,  control, getValues } =
     useForm({
       defaultValues: {
         title: post?.title || "",
