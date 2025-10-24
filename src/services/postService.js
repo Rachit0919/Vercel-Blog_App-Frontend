@@ -66,6 +66,7 @@ export const updatePost = async (id, data,userId) => {
 export const deletePost = async (id) => {
   return fetchRequest(`/api/v1/posts/${id}`, {
     method: "DELETE",
+    credentials: 'include'
   });
 };
 
