@@ -11,6 +11,7 @@ export default function AllPosts() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!id) return;
     // console.log("\nInside useeffect allposts.jsx");
     const fetchPosts = async () => {
       // console.log("\nInside useeffect fetchpost allposts.jsx");
@@ -44,7 +45,10 @@ export default function AllPosts() {
     <section className="w-full py-8">
       <Container>
         {loading ? (
-          <p className="text-center text-indigo-600">Loading posts...</p>
+          // <p className="text-center text-indigo-600">Loading posts...</p>
+          <p className="text-center text-lg font-medium text-indigo-600 animate-pulse">
+            Loading posts...
+          </p>
         ) : posts.length === 0 ? (
           <p className="text-center text-white">No posts available.</p>
         ) : posts.length === 1 ? (
