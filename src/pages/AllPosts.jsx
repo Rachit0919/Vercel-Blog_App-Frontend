@@ -179,6 +179,8 @@ export default function AllPosts() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.userData);
   const id = user?._id;
+  console.log("User at allPost.jsx: ", user)
+  console.log("id at allPost.jsx: ", id)
 
   const [posts, setPosts] = useState([]);
   const [loadingUser, setLoadingUser] = useState(true);
