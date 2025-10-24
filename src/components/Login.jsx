@@ -50,7 +50,7 @@ function Login() {
       const result = await res.json();
       console.log("Login request result:", result);
       if(!res.ok){
-        throw new ApiError( result.message || "Login failed!!!")
+        throw new ApiError("Login failed!!!")
       }
       dispatch(authLogin({ user: result.user, token: result.token }));
       
