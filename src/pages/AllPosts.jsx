@@ -180,12 +180,12 @@ export default function AllPosts() {
   const user = useSelector((state) => state.auth.userData);
   // const id = data.data._id;
   console.log("User at allPost.jsx: ", user)
-  console.log("id at allPost.jsx: ", id)
-
+  
   const [posts, setPosts] = useState([]);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [id, setId] = useState(null);
+  console.log("id at allPost.jsx: ", id)
 
   // 1️⃣ Fetch current user and store in Redux
   useEffect(() => {
