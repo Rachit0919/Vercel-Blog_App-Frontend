@@ -46,6 +46,7 @@ function Login() {
       console.log("Login request response:", res);
       const result = await res.json();
       console.log("Login request result:", result);
+      setError(result.message)
       if(!res.ok){
         throw new ApiError( result.message || "Login failed!!!")
       }
@@ -87,7 +88,7 @@ function Login() {
         {/* Error message */}
         {error && (
           <p className="text-red-500 mt-6 text-center text-sm font-medium">
-            "Your email or password is incorrect or The user doesn't exist"
+            {error}
           </p>
         )}
 
