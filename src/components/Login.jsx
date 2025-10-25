@@ -21,6 +21,7 @@ function Login() {
   const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [error, setError] = useState("");
+  console.log("Error: ", error)
 
   const login = async (data) => {
     setError("");
