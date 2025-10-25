@@ -13,7 +13,7 @@ const BeforeLoginComponent = () => {
     active: !authStatus,
   };
   return (
-    <div className="relative w-full z-20">
+    <div className="relative w-full">
       <img
         src={smileyWoman}
         alt="Smiley Woman"

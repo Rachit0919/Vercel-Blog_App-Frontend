@@ -46,10 +46,10 @@ function App() {
 }, [dispatch]);
   
   return !loading ? (
-    <div className='min-h-screen  flex flex-wrap content-between bg-white '>
-      <Header />
-      <main className='flex-grow w-full overflow-clip'>
-        <Outlet />
+    <div className='min-h-screen flex flex-wrap content-between bg-white '>
+      <Header  />
+      <main className='flex-grow w-full h-full overflow-clip z-0 '>
+        < Outlet />
       </main>
       <Footer />
     </div>
