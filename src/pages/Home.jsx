@@ -154,15 +154,28 @@ function Home() {
   }
 
   // Not logged in
+  // if (!authStatus) {
+  //   return (
+  //     <section className="w-full max-w-7xl">
+  //       <Container>
+  //         <BeforeLoginComponent />
+  //       </Container>
+  //     </section>
+  //   );
+  // }
+
   if (!authStatus) {
-    return (
-      <section className="w-full max-w-7xl">
-        <Container>
+  return (
+    <section className="w-full max-w-7xl">
+      <Container>
+        <div className="relative">
           <BeforeLoginComponent />
-        </Container>
-      </section>
-    );
-  }
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 
   // No posts
   if (posts.length === 0) {
